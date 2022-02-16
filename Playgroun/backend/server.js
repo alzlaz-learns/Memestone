@@ -3,17 +3,23 @@ const cors = require("cors");
 
 const app = express();
 
+global.__basedir = __dirname; //image upload directory
+
 var corsOptions = {
   origin: "http://localhost:8081"
 };
 
 app.use(cors(corsOptions));
 
+const initRoutes = require("./app/routes");//route for image upload
+
 // parse requests of content-type - application/json
 app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+
+initRoutes(app);//image upload
 
 // database
 const db = require("./app/models");

@@ -31,3 +31,9 @@ node server.js
 cd frontend
 
 npm start
+
+
+links used for setup
+
+file upload
+https://www.bezkoder.com/node-js-express-file-upload/
