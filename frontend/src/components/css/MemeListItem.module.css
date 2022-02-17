@@ -1,0 +1,29 @@
+
+.memeDiv {
+    width: fit-content;
+    min-height: fit-content;
+    padding: 0.5em;
+}
+
+.memeImage {
+    width: 15em;
+    height: 15em;
+    object-fit: contain;
+    border: 0.2em solid black;
+    background-color: dimgray;
+}
+
+.rankNumber {
+    float: left;
+    padding-right: 5px;
+}
+
+.memeUser {
+    font-weight: 500;
+    float: left;
+    padding-right: 5px;
+}
+
+.memeLikes {
+    float: right;
+}
