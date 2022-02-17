@@ -1,17 +1,19 @@
 import http from "../http-common";
 class MemeService {
-  /*upload(file, onUploadProgress) {
-    let formData = new FormData();
-    formData.append("file", file);
-    return http.post("/meme", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      onUploadProgress,
-    });
-  }*/
   getMemes() {
     return http.get("/memes");
+  }
+
+  getTopMemes() {
+    return http.get("/memes?top");
+  }
+
+  getMemesByUser(username) {
+    return http.get("/memes?byUser="+username);
+  }
+
+  getLikedMemes(username) {
+    return http.get("/memes?likedBy="+username);
   }
 }
 export default new MemeService();
