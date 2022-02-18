@@ -15,5 +15,9 @@ class MemeService {
   getLikedMemes(username) {
     return http.get("/api/memes?likedBy="+username);
   }
+
+  getNewMemesFor(username) {
+    return http.get("/api/memes?newMemesFor="+username);
+  }
 }
 export default new MemeService();

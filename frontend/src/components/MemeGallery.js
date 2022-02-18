@@ -1,8 +1,10 @@
 import React, {Component} from "react";
+import { Redirect } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import MemeService from "../services/meme.service";
 import ListMeme from './MemeListItem';
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
+import Masonry, {ResponsiveMasonry} from "react-responsive-masonry";
+import EventBus from "../common/EventBus";
 
 export const PageType = {
     TOP_MEMES: 1,
@@ -13,19 +15,26 @@ export const PageType = {
 export default class MemeGallery extends Component {
     constructor(props) {
         super(props);
-        const user = AuthService.getCurrentUser();
 
         this.state = {
-            currentUser: user,
+            redirect: null,
+            userReady: false,
+            currentUser: {username: ""},
             pageType: props.pageType,
-            byUser: props.byUser ? props.byUser : user.username,
+            byUser: props.byUser,
             memes: []
         };
-
     }
 
     componentDidMount() {
         const baseUrl = "http://localhost:8080/files/";
+
+        const user = AuthService.getCurrentUser();
+        if (!user) {
+            this.setState({ redirect: "/" });
+            return;
+        }
+        const byUser = this.state.byUser ? this.state.byUser : user.username 
 
         var data;
         switch(this.state.pageType) {
@@ -33,10 +42,10 @@ export default class MemeGallery extends Component {
                 data = MemeService.getTopMemes();
                 break;
             case PageType.LIKED_MEMES:
-                data = MemeService.getLikedMemes(this.state.currentUser.username);
+                data = MemeService.getLikedMemes(user.username);
                 break;
             case PageType.PROFILE:
-                data = MemeService.getMemesByUser(this.state.byUser);
+                data = MemeService.getMemesByUser(byUser);
                 break;
             default:
                 data = MemeService.getMemes();
@@ -50,7 +59,20 @@ export default class MemeGallery extends Component {
             this.setState({
                 memes: response.data,
             });
+        },
+        error => {
+            alert((error.response &&
+                  error.response.data &&
+                  error.response.data.message) ||
+                error.message ||
+                error.toString());
+    
+            if (error.response && error.response.status === 401) {
+              EventBus.dispatch("logout");
+            }
         });
+
+        this.setState({currentUser: user, byUser: byUser, userReady: true});
     }
 
     //Needs to be a lambda function or the page freezes! Don't change it!
@@ -61,13 +83,19 @@ export default class MemeGallery extends Component {
     }*/
 
     render() {
-        const { currentUser, memes } = this.state;
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+        }
+
+        const { currentUser, memes, userReady} = this.state;
 
         return (
             <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 3, 1400: 4, 2000: 5}}>
+                {(this.state.userReady) ?
                 <Masonry>
                     { memes.map(meme => <ListMeme meme={meme} key={meme.id} currentUser={currentUser}></ListMeme>) }
                 </Masonry>
+                : null }
             </ResponsiveMasonry>
         );
     }

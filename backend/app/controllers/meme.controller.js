@@ -7,7 +7,8 @@ const getMemes = (req, res) => {
   if (req.query.top != null) {
     Meme.findAll({
       order: [
-        ['likes', 'DESC']
+        ['likes', 'DESC'],
+        ['updatedAt', 'DESC']
       ]
     }).then(memes => res.status(200).send(memes));
   }
@@ -34,16 +35,16 @@ const getMemes = (req, res) => {
   }
   //Get front page memes for a given user (/api/memes?newMemesFor='username')
   else if (req.query.newMemesFor) {
-    Memes.findAll({
+    Meme.findAll({
       where: {
         poster_id: {
-          [sequelize.Op.not]: req.query.newMemesFor
+          [Sequelize.Op.not]: req.query.newMemesFor
         }
       },
       order: [
-        ['updatedAt', 'DESC']
+        ['createdAt', 'DESC']
       ]
-    })
+    }).then(memes => res.status(200).send(memes));
   }
   //Get All Memes
   else Meme.findAll().then(memes => res.status(200).send(memes));
