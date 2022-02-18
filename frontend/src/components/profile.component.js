@@ -4,6 +4,7 @@ import AuthService from "../services/auth.service";
 import MemeGallery, {PageType} from './MemeGallery';
 import styles from "./css/UserProfile.module.css";
 import profilePicture from '../assets/profile.png';
+import statsService from "../services/stats.service";
 
 export default class Profile extends Component {
   constructor(props) {
@@ -12,15 +13,28 @@ export default class Profile extends Component {
     this.state = {
       redirect: null,
       userReady: false,
-      currentUser: { username: "" }
+      currentUser: { username: "" },
+      numUploads: 0,
+      numLikes: 0
     };
   }
 
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
 
+    statsService.getNumLikes(currentUser.username).then((response) => {
+        var likes = 0;
+        for (var i=0; i<response.data.length; i++) {
+            likes += response.data[i].likes;
+        }
+        this.setState({
+            numUploads: response.data.length,
+            numLikes: likes
+        });
+    });
+
     if (!currentUser) this.setState({ redirect: "/home" });
-    this.setState({ currentUser: currentUser, userReady: true })
+    this.setState({ currentUser: currentUser, userReady: true})
   }
 
   render() {
@@ -28,7 +42,7 @@ export default class Profile extends Component {
       return <Redirect to={this.state.redirect} />
     }
 
-    const { currentUser } = this.state;
+    const { currentUser, numLikes, numUploads } = this.state;
 
     return (
       <div className="content">
@@ -40,8 +54,8 @@ export default class Profile extends Component {
             <p class={styles.username}>@{currentUser.username}</p>
 
             <div class={styles.statsDiv}>
-            <p class={styles.rankingLikes}>23 likes</p>
-            <p class={styles.numUploads}>6 Uploads</p>
+            <p class={styles.rankingLikes}>{numLikes} likes</p>
+            <p class={styles.numUploads}>{numUploads} Uploads</p>
             </div>
 
             <Link to="/make" class={styles.uploadButton}>New Meme</Link>

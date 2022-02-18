@@ -27,8 +27,22 @@ const getMemes = (req, res) => {
         id: {
           [Sequelize.Op.in]: sequelize.literal("(select memeID from likes where username='"+req.query.likedBy+"')")
         }
-      }
+      },
+      order: [
+        ['updatedAt', 'DESC']
+      ]
     }).then(memes => res.status(200).send(memes));
+  }
+  //Whether a given meme is liked by a user (/memes?isLiked=meme_ID&user='username')
+  else if (req.query.isLiked) {
+    if (req.query.user) {
+      Likes.findOne({
+        where: {
+          username: req.query.user,
+          memeID: req.query.isLiked
+        }
+      }).then(memes => res.status(200).send(memes));
+    } else res.status(400).send("missing user parameter");
   }
   //Get All Memes
   else Meme.findAll().then(memes => res.status(200).send(memes));
