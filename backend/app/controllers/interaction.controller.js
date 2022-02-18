@@ -28,7 +28,9 @@ const submitLike = async (req, res) => {
     Likes.create({
       username: req.body.username,
       memeID: req.body.meme
-    })
+    });
+    //Increment like count for meme
+    Meme.increment('likes', {by: 1, where: { id: req.body.meme }});
   }
 }
 
@@ -46,7 +48,9 @@ const submitDislike = async (req, res) => {
         username: req.body.username,
         memeID: req.body.meme
       }
-    })
+    });
+    //Decrement like count for meme
+    Meme.decrement('likes', {by: 1, where: { id: req.body.meme }});
   }
 }
 

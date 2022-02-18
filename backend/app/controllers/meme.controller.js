@@ -1,10 +1,9 @@
 const { Sequelize, sequelize } = require("../models");
 const db = require("../models");
 const Meme = db.meme;
-const Likes = db.likes;
 
 const getMemes = (req, res) => {
-  //Top Memes (/memes?top)
+  //Top Memes (/api/memes?top)
   if (req.query.top != null) {
     Meme.findAll({
       order: [
@@ -12,7 +11,7 @@ const getMemes = (req, res) => {
       ]
     }).then(memes => res.status(200).send(memes));
   }
-  //By User (/memes?byUser='username')
+  //By User (/api/memes?byUser='username')
   else if (req.query.byUser != null) {
     Meme.findAll({
       where: {
@@ -20,7 +19,7 @@ const getMemes = (req, res) => {
       }
     }).then(memes => res.status(200).send(memes));
   }
-  //Liked Memes (/memes?likedBy='username')
+  //Liked Memes (/api/memes?likedBy='username')
   else if (req.query.likedBy) {
     Meme.findAll({
       where: {
@@ -33,16 +32,18 @@ const getMemes = (req, res) => {
       ]
     }).then(memes => res.status(200).send(memes));
   }
-  //Whether a given meme is liked by a user (/memes?isLiked=meme_ID&user='username')
-  else if (req.query.isLiked) {
-    if (req.query.user) {
-      Likes.findOne({
-        where: {
-          username: req.query.user,
-          memeID: req.query.isLiked
+  //Get front page memes for a given user (/api/memes?newMemesFor='username')
+  else if (req.query.newMemesFor) {
+    Memes.findAll({
+      where: {
+        poster_id: {
+          [sequelize.Op.not]: req.query.newMemesFor
         }
-      }).then(memes => res.status(200).send(memes));
-    } else res.status(400).send("missing user parameter");
+      },
+      order: [
+        ['updatedAt', 'DESC']
+      ]
+    })
   }
   //Get All Memes
   else Meme.findAll().then(memes => res.status(200).send(memes));

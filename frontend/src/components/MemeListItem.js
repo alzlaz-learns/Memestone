@@ -21,10 +21,15 @@ export default class MemeListItem extends Component {
         });
     }
 
-    Test = () => {
-        if (this.state.isLiked) InteractionService.submitDislike(this.state.meme.id, this.state.currentUser.username);
-        else InteractionService.submitLike(this.state.meme.id, this.state.currentUser.username);
-        this.setState({isLiked: !this.state.isLiked});
+    LikeMeme = () => {
+        if (this.state.isLiked) {
+            InteractionService.submitDislike(this.state.meme.id, this.state.currentUser.username);
+            this.state.meme.likes--;
+        } else {
+            InteractionService.submitLike(this.state.meme.id, this.state.currentUser.username);
+            this.state.meme.likes++;
+        }
+        this.setState({isLiked: !this.state.isLiked, meme: this.state.meme});
     }
 
     render() {
@@ -40,7 +45,7 @@ export default class MemeListItem extends Component {
                     {(this.rank) ? <span class={styles.rankNumber}>#{this.rank}</span> : null}
                     <span class={styles.memeUser}>@{meme.poster_id}</span>
                     <span class={styles.memeLikes}>♥ {meme.likes} like{(meme.likes === 1)?"":"s"}</span>
-                    <a class={styles.likeButton} onClick={this.Test}>{(isLiked) ? "unlike" : "like"}</a>
+                    <a class={styles.likeButton} onClick={this.LikeMeme}>{(isLiked) ? "unlike" : "like"}</a>
                 </div>
             </div>
         );
