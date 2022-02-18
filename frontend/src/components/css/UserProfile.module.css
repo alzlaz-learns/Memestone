@@ -1,0 +1,70 @@
+.content {
+    padding: 1em;
+}
+
+.topBar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+
+.username {
+    margin: 1em;
+    font-size: larger;
+    padding-right: 2em;
+}
+
+.statsDiv {
+    font-size: large;
+    margin: 5px;
+    padding-right: 1em;
+    flex-grow: 0.25;
+}
+
+.rankingLikes {
+    border: 0.1em solid black;
+    padding: 5px;
+}
+.numUploads {
+    border: 0.1em solid black;
+    padding: 5px;
+}
+
+.userRanking {
+    border: 0.1em solid black;
+    padding: 5px;
+    margin: 5px;
+    font-size: large;
+    flex-grow: 1;
+    height: fit-content;
+}
+
+.uploadButton {
+    color: black;
+    background-color: white;
+    border: 0.1em solid gray;
+    border-radius: 3px;
+    padding: 1em;
+    font-size: medium;
+    margin: 2em;
+    flex-grow: .25;
+    text-decoration: none;
+    text-align: center;
+    height: fit-content;
+}
+
+.gallery {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    border: 0.1em solid black;
+    padding: 5px;
+}
+
+.profilePicture {
+    border: 0.1em solid black;
+    width: 10em;
+    width: 10em;
+    object-fit: contain;
+    height: fit-content;
+}

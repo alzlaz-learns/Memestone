@@ -12,11 +12,10 @@ import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
-import MemeListItem from "./components/MemeListItem";
+import LikedMemes from "./components/LikedMemes";
+import TopRanked from "./components/TopRanked";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-
-import Test from "./components/test";
 
 // import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
@@ -74,41 +73,30 @@ class App extends Component {
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
               <Link to={"/home"} className="nav-link">
-                Front
+                Home
               </Link>
             </li>
 
-            
-
-
-            {currentUser && (
+            {/* Account-Locked options */}
+            {currentUser && ([
               <li className="nav-item">
-                <Link to={"/user"} className="nav-link">
-                  upload
-                </Link>
+                <Link to={"/user"} className="nav-link">upload</Link>
+              </li>,
+              <li className="nav-item">
+                <Link to={"/top"} className="nav-link">Top Ranked</Link>
+              </li>,
+              <li className="nav-item">
+                <Link to={"/liked"} className="nav-link">Liked Memes</Link>
               </li>
-            )}
 
-            {currentUser && (
-            <li className="nav-item">
-              <Link to={"/test"} className="nav-link">
-                test
-              </Link>
-            </li>
-            )}
+            ])}
           </div>
 
-
-          
-         
-          
-
+          {/* Account/Logout controls */}
           {currentUser ? (
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link to={"/profile"} className="nav-link">
-                  {currentUser.username}
-                </Link>
+                <Link to={"/profile"} className="nav-link">{currentUser.username}</Link>
               </li>
               <li className="nav-item">
                 <a href="/login" className="nav-link" onClick={this.logOut}>
@@ -119,23 +107,17 @@ class App extends Component {
           ) : (
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link to={"/login"} className="nav-link">
-                  Login
-                </Link>
+                <Link to={"/login"} className="nav-link">Login</Link>
               </li>
 
               <li className="nav-item">
-                <Link to={"/register"} className="nav-link">
-                  Sign Up
-                </Link>
+                <Link to={"/register"} className="nav-link">Sign Up</Link>
               </li>
             </div>
           )}
-
-
         </nav>
 
-        <div className="container mt-3">
+        <div>
           <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />
@@ -144,8 +126,8 @@ class App extends Component {
             <Route path="/user" component={BoardUser} />
             <Route path="/mod" component={BoardModerator} />
             <Route path="/admin" component={BoardAdmin} />
-            <Route path="/tylerTest" component={MemeListItem} />
-            <Route exact path="/test" component={Test} />
+            <Route exact path="/top" component={TopRanked} />
+            <Route exact path="/liked" component={LikedMemes} />
           </Switch>
         </div>
 

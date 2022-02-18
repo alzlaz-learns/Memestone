@@ -1,13 +1,15 @@
 
 .memeDiv {
-    width: fit-content;
+    width: 100%;
     min-height: fit-content;
     padding: 0.5em;
 }
 
 .memeImage {
-    width: 15em;
-    height: 15em;
+    width: 100%;
+    height: auto;
+    min-width: 10em;
+    min-height: 10em;
     object-fit: contain;
     border: 0.2em solid black;
     background-color: dimgray;
