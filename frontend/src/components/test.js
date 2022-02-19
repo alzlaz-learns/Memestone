@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
-import { Gallery } from "./gallery";
 
+import TinderCard from "react-tinder-card";
 export default class Test extends Component {
     constructor(props) {
         super(props);
@@ -41,7 +41,7 @@ export default class Test extends Component {
                 this is a test page
                 test
                 </h3>
-                <Gallery />
+                <TinderCard />
           </div>
         );
       }
