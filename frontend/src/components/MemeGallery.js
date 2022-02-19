@@ -47,6 +47,9 @@ export default class MemeGallery extends Component {
             case PageType.PROFILE:
                 data = MemeService.getMemesByUser(byUser);
                 break;
+            case PageType.HOME:
+                data = MemeService.getNewMemesFor(byUser);
+                break;
             default:
                 data = MemeService.getMemes();
         }
@@ -94,7 +97,8 @@ export default class MemeGallery extends Component {
                 {(userReady) ?
             <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 3, 1400: 4, 2000: 5}}>
                 <Masonry>
-                    { memes.map(meme => <ListMeme meme={meme} key={meme.id} currentUser={currentUser}></ListMeme>) }
+                    { memes.map(meme => <ListMeme meme={meme} key={meme.id} 
+                    currentUser={currentUser}></ListMeme>) }
                 </Masonry>
             </ResponsiveMasonry>
              : null }

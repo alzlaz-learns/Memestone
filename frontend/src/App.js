@@ -15,6 +15,8 @@ import BoardAdmin from "./components/board-admin.component";
 import LikedMemes from "./components/LikedMemes";
 import TopRanked from "./components/TopRanked";
 
+
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // import AuthVerify from "./common/auth-verify";
@@ -134,6 +136,7 @@ class App extends Component {
             <Route path="/admin" component={BoardAdmin} />
             <Route exact path="/top" component={TopRanked} />
             <Route exact path="/liked" component={LikedMemes} />
+            
           </Switch>
         </div>
 
