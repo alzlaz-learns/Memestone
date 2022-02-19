@@ -7393,6 +7393,11 @@
   dependencies:
     "retry" "^0.12.0"
 
+"p-sleep@^1.1.0":
+  "integrity" "sha512-bwP3GKZirBUYMtiUuBrheLUQdRXVeE/pmHOaLpNJzNfAD4b5AjDn6l823brXcQFade4G/g7GMNQ3KV86E8EaEw=="
+  "resolved" "https://registry.npmjs.org/p-sleep/-/p-sleep-1.1.0.tgz"
+  "version" "1.1.0"
+
 "p-try@^1.0.0":
   "integrity" "sha1-y8ec26+P1CKOE/Yh8rGiN8GyB7M="
   "resolved" "https://registry.npmjs.org/p-try/-/p-try-1.0.0.tgz"
@@ -8685,7 +8690,7 @@
     "strip-ansi" "6.0.0"
     "text-table" "0.2.0"
 
-"react-dom@*", "react-dom@^16.13.0", "react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.6":
+"react-dom@*", "react-dom@^16.0.0 || ^17.0.0", "react-dom@^16.13.0", "react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.6":
   "integrity" "sha512-y09d2c4cG220DzdlFkPTnVvGTszVvNpC73v+AaLGLHbkpy3SSgvYq8x0rNwPJ/Rk/CicTNgk0hbHNw1gMEZAXg=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-16.13.0.tgz"
   "version" "16.13.0"
@@ -8814,6 +8819,13 @@
     "workbox-webpack-plugin" "4.3.1"
   optionalDependencies:
     "fsevents" "2.1.2"
+
+"react-tinder-card@^1.4.4":
+  "integrity" "sha512-VUdAZQiWoFClTe6Evua4sjYy3L3bSYvoWgEMNroiRoK0h5AsfqDXCfhaizUczN6gEUe0mvVDd4bZcQ1qR4sI7Q=="
+  "resolved" "https://registry.npmjs.org/react-tinder-card/-/react-tinder-card-1.4.5.tgz"
+  "version" "1.4.5"
+  dependencies:
+    "p-sleep" "^1.1.0"
 
 "react-validation@^3.0.7":
   "integrity" "sha1-tQcL+KbnN7hw2Hu/tyzMpys/N1A="

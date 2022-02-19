@@ -42,7 +42,7 @@ const getMemes = (req, res) => {
         }
       },
       order: [
-        ['createdAt', 'DESC']
+        ['createdAt', 'ASC']
       ]
     }).then(memes => res.status(200).send(memes));
   }
