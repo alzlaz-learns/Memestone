@@ -28,14 +28,15 @@ export default class MemeListItem extends Component {
     }
 
     LikeMeme = () => {
+        let newMeme = Object.assign({}, this.state.meme);
         if (this.state.isLiked) {
             InteractionService.submitDislike(this.state.meme.id, this.state.currentUser.id);
-            this.state.meme.likes--;
+            newMeme.likes--;
         } else {
             InteractionService.submitLike(this.state.meme.id, this.state.currentUser.id);
-            this.state.meme.likes++;
+            newMeme.likes++;
         }
-        this.setState({isLiked: !this.state.isLiked, meme: this.state.meme});
+        this.setState({isLiked: !this.state.isLiked, meme: newMeme});
     }
 
     render() {
@@ -52,7 +53,7 @@ export default class MemeListItem extends Component {
                     {(this.rank) ? <span className={styles.rankNumber}>#{this.rank}</span> : null}
                     <Link to={"/profile?user="+username}><span className={styles.memeUser}>@{username}</span></Link>
                     <span className={styles.memeLikes}>♥ {meme.likes} like{(meme.likes === 1)?"":"s"}</span>
-                    <a className={styles.likeButton} onClick={this.LikeMeme}>{(isLiked) ? "unlike" : "like"}</a>
+                    <button className={styles.likeButton} onClick={this.LikeMeme}>{(isLiked) ? "unlike" : "like"}</button>
                 </div>
             </div>
         );

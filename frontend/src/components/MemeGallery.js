@@ -42,7 +42,6 @@ export default class MemeGallery extends Component {
                 data = MemeService.getTopMemes();
                 break;
             case PageType.LIKED_MEMES:
-                console.log(user.id);
                 data = MemeService.getLikedMemes(user.id);
                 break;
             case PageType.PROFILE:

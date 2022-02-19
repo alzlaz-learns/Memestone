@@ -25,6 +25,11 @@
     font-weight: 500;
     float: left;
     padding-right: 5px;
+    color: royalblue;
+}
+
+.memeUser:hover {
+    color: blue;
 }
 
 .memeLikes {
@@ -34,4 +39,11 @@
 .likeButton {
     float: right;
     margin-right: 1em;
+    background: none;
+    border: none;
+    color: royalblue;
+}
+
+.likeButton:hover {
+    color: blue;
 }

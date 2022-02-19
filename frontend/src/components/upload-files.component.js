@@ -33,19 +33,18 @@ export default class UploadImages extends Component {
     const currentUser = AuthService.getCurrentUser();
 
     if (!currentUser) this.setState({ redirect: "/login" });
-    this.setState({ currentUser: currentUser, userReady: true });
 
     UploadService.getFiles().then((response) => {
       this.setState({
         imageInfos: response.data,
       });
     });
+    this.setState({ currentUser: currentUser, userReady: true });
   }
 
 
 
   selectFile(event) {
-    // console.log(event.target.files[0].name);
     this.setState({
       currentFile:  event.target.files[0],
       previewImage: URL.createObjectURL(event.target.files[0]),
@@ -62,12 +61,14 @@ export default class UploadImages extends Component {
       progress: 0,
     });
 
-    this.setState({currentFile: Date.now() + this.state.currentFile.name});//AL trying shit out
+    //this.setState({currentFile: Date.now() + this.state.currentFile.name});//AL trying shit out
     // console.log(this.state.currentFile.name);
-    
-    
 
-    UploadService.upload(this.state.currentFile, this.state.currentUser,(event) => {
+    UploadService.upload(this.state.currentFile, {
+      id: this.state.currentUser.id,
+      username: this.state.currentUser.username,
+      filename: this.state.currentFile.name
+    },(event) => {
 
 
       this.setState({
