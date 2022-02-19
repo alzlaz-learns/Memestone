@@ -22,6 +22,7 @@ export default class Profile extends Component {
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
 
+    if (currentUser)
     statsService.getNumLikes(currentUser.username).then((response) => {
         var likes = 0;
         for (var i=0; i<response.data.length; i++) {

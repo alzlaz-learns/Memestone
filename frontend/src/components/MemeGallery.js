@@ -28,13 +28,13 @@ export default class MemeGallery extends Component {
 
     componentDidMount() {
         const baseUrl = "http://localhost:8080/files/";
-
+        
         const user = AuthService.getCurrentUser();
         if (!user) {
             this.setState({ redirect: "/" });
             return;
         }
-        const byUser = this.state.byUser ? this.state.byUser : user.username 
+        const byUser = this.state.byUser ? this.state.byUser : user.username;
 
         var data;
         switch(this.state.pageType) {
@@ -90,13 +90,17 @@ export default class MemeGallery extends Component {
         const { currentUser, memes, userReady} = this.state;
 
         return (
+            <div>
+                {(userReady) ?
             <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 3, 1400: 4, 2000: 5}}>
-                {(this.state.userReady) ?
+                
                 <Masonry>
                     { memes.map(meme => <ListMeme meme={meme} key={meme.id} currentUser={currentUser}></ListMeme>) }
                 </Masonry>
-                : null }
+               
             </ResponsiveMasonry>
+             : null }
+            </div>
         );
     }
 }
