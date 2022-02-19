@@ -6,7 +6,7 @@ export default class LikedMemes extends React.Component{
         return (
             <div class="content">
                 <h4>Your Liked Memes</h4>
-                <MemeGallery pageType={PageType.TOP_MEMES}></MemeGallery>
+                <MemeGallery pageType={PageType.LIKED_MEMES}></MemeGallery>
             </div>
         );
     }

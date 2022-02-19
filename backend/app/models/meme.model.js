@@ -30,7 +30,7 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue: 0
     },
     poster_id: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false
     },
 	likes: {

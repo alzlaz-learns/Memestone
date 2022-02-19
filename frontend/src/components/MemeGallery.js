@@ -19,7 +19,7 @@ export default class MemeGallery extends Component {
         this.state = {
             redirect: null,
             userReady: false,
-            currentUser: {username: ""},
+            currentUser: {userID: -1},
             pageType: props.pageType,
             byUser: props.byUser,
             memes: []
@@ -34,7 +34,7 @@ export default class MemeGallery extends Component {
             this.setState({ redirect: "/" });
             return;
         }
-        const byUser = this.state.byUser ? this.state.byUser : user.username;
+        const byUser = this.state.byUser ? this.state.byUser : user.id;
 
         var data;
         switch(this.state.pageType) {
@@ -42,7 +42,8 @@ export default class MemeGallery extends Component {
                 data = MemeService.getTopMemes();
                 break;
             case PageType.LIKED_MEMES:
-                data = MemeService.getLikedMemes(user.username);
+                console.log(user.id);
+                data = MemeService.getLikedMemes(user.id);
                 break;
             case PageType.PROFILE:
                 data = MemeService.getMemesByUser(byUser);

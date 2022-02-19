@@ -1,7 +1,7 @@
 import http from "../http-common";
 class StatsService {
-  getNumLikes(username) {
-    return http.get("/api/stats/numLikes?user="+username);
+  getNumLikes(userID) {
+    return http.get("/api/stats/numLikes?user="+userID);
   }
 }
 export default new StatsService();

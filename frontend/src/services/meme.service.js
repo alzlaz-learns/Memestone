@@ -8,16 +8,16 @@ class MemeService {
     return http.get("/api/memes?top");
   }
 
-  getMemesByUser(username) {
-    return http.get("/api/memes?byUser="+username);
+  getMemesByUser(userID) {
+    return http.get("/api/memes?byUser="+userID);
   }
 
-  getLikedMemes(username) {
-    return http.get("/api/memes?likedBy="+username);
+  getLikedMemes(userID) {
+    return http.get("/api/memes?likedBy="+userID);
   }
 
-  getNewMemesFor(username) {
-    return http.get("/api/memes?newMemesFor="+username);
+  getNewMemesFor(userID) {
+    return http.get("/api/memes?newMemesFor="+userID);
   }
 }
 export default new MemeService();

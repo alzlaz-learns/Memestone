@@ -12,7 +12,7 @@ const getMemes = (req, res) => {
       ]
     }).then(memes => res.status(200).send(memes));
   }
-  //By User (/api/memes?byUser='username')
+  //By User (/api/memes?byUser='userID')
   else if (req.query.byUser != null) {
     Meme.findAll({
       where: {
@@ -20,12 +20,12 @@ const getMemes = (req, res) => {
       }
     }).then(memes => res.status(200).send(memes));
   }
-  //Liked Memes (/api/memes?likedBy='username')
+  //Liked Memes (/api/memes?likedBy='userID')
   else if (req.query.likedBy) {
     Meme.findAll({
       where: {
         id: {
-          [Sequelize.Op.in]: sequelize.literal("(select memeID from likes where username='"+req.query.likedBy+"')")
+          [Sequelize.Op.in]: sequelize.literal("(select memeID from likes where userID="+req.query.likedBy+")")
         }
       },
       order: [
@@ -33,7 +33,7 @@ const getMemes = (req, res) => {
       ]
     }).then(memes => res.status(200).send(memes));
   }
-  //Get front page memes for a given user (/api/memes?newMemesFor='username')
+  //Get front page memes for a given user (/api/memes?newMemesFor='userID')
   else if (req.query.newMemesFor) {
     Meme.findAll({
       where: {

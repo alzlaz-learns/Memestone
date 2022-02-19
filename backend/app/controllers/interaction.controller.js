@@ -8,7 +8,7 @@ const getLikes = (req, res) => {
     if (req.query.user) {
       Likes.findOne({
         where: {
-          username: req.query.user,
+          userID: req.query.user,
           memeID: req.query.meme
         }
       }).then(memes => res.status(200).send(memes));
@@ -19,14 +19,14 @@ const getLikes = (req, res) => {
 const submitLike = async (req, res) => {
   const entry = await Likes.findOne({
     where: {
-      username: req.body.username,
+      userID: req.body.userID,
       memeID: req.body.meme
     }
   });
 
   if (entry === null) { //Not already liked
     Likes.create({
-      username: req.body.username,
+      userID: req.body.userID,
       memeID: req.body.meme
     });
     //Increment like count for meme
@@ -37,7 +37,7 @@ const submitLike = async (req, res) => {
 const submitDislike = async (req, res) => {
   const entry = await Likes.findOne({
     where: {
-      username: req.body.username,
+      userID: req.body.userID,
       memeID: req.body.meme
     }
   });
@@ -45,7 +45,7 @@ const submitDislike = async (req, res) => {
   if (entry !== null) { //Already liked
     Likes.destroy({
       where: {
-        username: req.body.username,
+        userID: req.body.userID,
         memeID: req.body.meme
       }
     });

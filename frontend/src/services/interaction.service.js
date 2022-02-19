@@ -1,19 +1,19 @@
 import http from "../http-common";
 class InteractionService {
-  isMemeLikedBy(memeID, username) {
-    return http.get("/api/likes?meme="+memeID+"&user="+username);
+  isMemeLikedBy(memeID, userID) {
+    return http.get("/api/likes?meme="+memeID+"&user="+userID);
   }
 
-  submitLike(meme, username) {
+  submitLike(meme, userID) {
     return http.post("/api/like", {
-      username,
+      userID,
       meme
     });
   }
 
-  submitDislike(meme, username) {
+  submitDislike(meme, userID) {
     return http.post("/api/dislike", {
-      username,
+      userID,
       meme
     });
   }

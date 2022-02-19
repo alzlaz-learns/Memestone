@@ -16,17 +16,17 @@ export default class MemeListItem extends Component {
     }
 
     componentDidMount() {
-        InteractionService.isMemeLikedBy(this.state.meme.id, this.state.currentUser.username).then((response) => {
+        InteractionService.isMemeLikedBy(this.state.meme.id, this.state.currentUser.id).then((response) => {
             this.setState({isLiked: response.data.length === undefined});
         });
     }
 
     LikeMeme = () => {
         if (this.state.isLiked) {
-            InteractionService.submitDislike(this.state.meme.id, this.state.currentUser.username);
+            InteractionService.submitDislike(this.state.meme.id, this.state.currentUser.id);
             this.state.meme.likes--;
         } else {
-            InteractionService.submitLike(this.state.meme.id, this.state.currentUser.username);
+            InteractionService.submitLike(this.state.meme.id, this.state.currentUser.id);
             this.state.meme.likes++;
         }
         this.setState({isLiked: !this.state.isLiked, meme: this.state.meme});

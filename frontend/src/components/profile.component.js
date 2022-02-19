@@ -13,7 +13,7 @@ export default class Profile extends Component {
     this.state = {
       redirect: null,
       userReady: false,
-      currentUser: { username: "" },
+      currentUser: { userID: "" },
       numUploads: 0,
       numLikes: 0
     };
@@ -23,7 +23,7 @@ export default class Profile extends Component {
     const currentUser = AuthService.getCurrentUser();
 
     if (currentUser)
-    statsService.getNumLikes(currentUser.username).then((response) => {
+    statsService.getNumLikes(currentUser.id).then((response) => {
         var likes = 0;
         for (var i=0; i<response.data.length; i++) {
             likes += response.data[i].likes;
