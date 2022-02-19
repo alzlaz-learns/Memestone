@@ -17,12 +17,10 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false
     },
     caption: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING
     },
     tags: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING
     },
     is_private: {
         type: Sequelize.BOOLEAN,

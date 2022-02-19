@@ -1,15 +1,26 @@
 const uploadFile = require("../middleware/upload");
 const fs = require("fs");
 const baseUrl = "http://localhost:8080/files/";
+const { v4: uuidv4 } = require('uuid');
+
+const db = require("../models");
+const Meme = db.meme;
 
 const upload = async (req, res) => {
   try {
+
     await uploadFile(req, res);
 
     if (req.file == undefined) {
       return res.status(400).send({ message: "Please upload a file!" });
     }
-
+    
+    Meme.create({
+      url: req.query.date + req.file.originalname,
+      uuid: uuidv4(),
+      poster_id: req.body.id
+    })
+    
     res.status(200).send({
       message: "Uploaded the file successfully: " + req.file.originalname,
     });

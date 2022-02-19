@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import UploadService from "../services/file-upload.service";
+import AuthService from "../services/auth.service";//for database submissions
+import { Redirect } from "react-router-dom";
 
 export default class UploadImages extends Component {
   constructor(props) {
@@ -8,16 +10,31 @@ export default class UploadImages extends Component {
     this.upload = this.upload.bind(this);
 
     this.state = {
+      
       currentFile: undefined,
       previewImage: undefined,
       progress: 0,
       message: "",
+      
+      uploadName: "", //AL - added as an attempt to alter name
 
       imageInfos: [],
+
+      redirect: null,
+      userReady: false,
+      currentUser: { username: "" },
+      
     };
+
   }
 
+
   componentDidMount() {
+    const currentUser = AuthService.getCurrentUser();
+
+    if (!currentUser) this.setState({ redirect: "/login" });
+    this.setState({ currentUser: currentUser, userReady: true });
+
     UploadService.getFiles().then((response) => {
       this.setState({
         imageInfos: response.data,
@@ -25,12 +42,18 @@ export default class UploadImages extends Component {
     });
   }
 
+
+
   selectFile(event) {
+    // console.log(event.target.files[0].name);
     this.setState({
-      currentFile: event.target.files[0],
+      currentFile:  event.target.files[0],
       previewImage: URL.createObjectURL(event.target.files[0]),
       progress: 0,
-      message: ""
+      message: "",
+      id: 0,
+      username: "",
+      uploadName: event.target.files[0].name
     });
   }
 
@@ -39,7 +62,14 @@ export default class UploadImages extends Component {
       progress: 0,
     });
 
-    UploadService.upload(this.state.currentFile, (event) => {
+    this.setState({currentFile: Date.now() + this.state.currentFile.name});//AL trying shit out
+    // console.log(this.state.currentFile.name);
+    
+    
+
+    UploadService.upload(this.state.currentFile, this.state.currentUser,(event) => {
+
+
       this.setState({
         progress: Math.round((100 * event.loaded) / event.total),
       });
@@ -47,13 +77,18 @@ export default class UploadImages extends Component {
       .then((response) => {
         this.setState({
           message: response.data.message,
+          
         });
         return UploadService.getFiles();
       })
       .then((files) => {
         this.setState({
           imageInfos: files.data,
+          
         });
+        
+          
+
       })
       .catch((err) => {
         this.setState({
@@ -65,14 +100,22 @@ export default class UploadImages extends Component {
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />
+    }
     const {
+      
       currentFile,
       previewImage,
       progress,
       message,
       imageInfos,
+      uploadName,
+      
+
     } = this.state;
 
+    
     return (
       <div>
         <div className="row">
@@ -131,7 +174,14 @@ export default class UploadImages extends Component {
               ))}
           </ul>
         </div>
+        
+          {uploadName && (<p>
+            {uploadName}
+            </p>)}
+
+        
       </div>
+      
     );
   }
 }
