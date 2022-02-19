@@ -14,7 +14,7 @@ const upload = async (req, res) => {
     if (req.file == undefined) {
       return res.status(400).send({ message: "Please upload a file!" });
     }
-    
+
     Meme.create({
       url: req.query.date + req.file.originalname,
       uuid: uuidv4(),
@@ -41,6 +41,11 @@ const upload = async (req, res) => {
 
 const getListFiles = (req, res) => {
   const directoryPath = __basedir + "/resources/static/assets/uploads/";
+
+  //create uploads directory if it does not exist yet!
+  if (!fs.existsSync(directoryPath)){
+    fs.mkdirSync(directoryPath, { recursive: true });
+  }
 
   fs.readdir(directoryPath, function (err, files) {
     if (err) {
