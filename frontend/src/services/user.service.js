@@ -19,6 +19,10 @@ class UserService {
   getAdminBoard() {
     return http.get(API_URL + 'admin', { headers: authHeader() });
   }
+
+  getUserName(userID) {
+    return http.get(API_URL + 'getUserName?user='+userID, { headers: authHeader() });
+  }
 }
 
 export default new UserService();

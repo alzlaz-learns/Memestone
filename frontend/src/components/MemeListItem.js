@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import styles from './css/MemeListItem.module.css';
 import InteractionService from "../services/interaction.service";
+import UserService from "../services/user.service";
 
 export default class MemeListItem extends Component {
     rank;
@@ -11,13 +12,17 @@ export default class MemeListItem extends Component {
         this.state = {
             currentUser: this.props.currentUser,
             meme: this.props.meme,
-            isLiked: 0
+            isLiked: 0,
+            username: ""
         };
     }
 
     componentDidMount() {
         InteractionService.isMemeLikedBy(this.state.meme.id, this.state.currentUser.id).then((response) => {
             this.setState({isLiked: response.data.length === undefined});
+        });
+        UserService.getUserName(this.state.meme.poster_id).then((response) => {
+            this.setState({username: response.data[0].username});
         });
     }
 
@@ -35,17 +40,18 @@ export default class MemeListItem extends Component {
     render() {
         const {
             meme,
-            isLiked
+            isLiked,
+            username
           } = this.state;
 
         return (
-            <div class={styles.memeDiv}>
-                <img src={meme.url} class={styles.memeImage} alt=""></img>
+            <div className={styles.memeDiv}>
+                <img src={meme.url} className={styles.memeImage} alt=""></img>
                 <div>
-                    {(this.rank) ? <span class={styles.rankNumber}>#{this.rank}</span> : null}
-                    <span class={styles.memeUser}>@{meme.poster_id}</span>
-                    <span class={styles.memeLikes}>♥ {meme.likes} like{(meme.likes === 1)?"":"s"}</span>
-                    <a class={styles.likeButton} onClick={this.LikeMeme}>{(isLiked) ? "unlike" : "like"}</a>
+                    {(this.rank) ? <span className={styles.rankNumber}>#{this.rank}</span> : null}
+                    <span className={styles.memeUser}>@{username}</span>
+                    <span className={styles.memeLikes}>♥ {meme.likes} like{(meme.likes === 1)?"":"s"}</span>
+                    <a className={styles.likeButton} onClick={this.LikeMeme}>{(isLiked) ? "unlike" : "like"}</a>
                 </div>
             </div>
         );

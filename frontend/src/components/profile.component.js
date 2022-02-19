@@ -51,15 +51,15 @@ export default class Profile extends Component {
         <div>
         {/* Info bar above gallery */}
         <div className={styles.topBar}>
-            <img src= {profilePicture} class={styles.profilePicture} alt="User Icon"></img>
-            <p class={styles.username}>@{currentUser.username}</p>
+            <img src= {profilePicture} className={styles.profilePicture} alt="User Icon"></img>
+            <p className={styles.username}>@{currentUser.username}</p>
 
-            <div class={styles.statsDiv}>
-            <p class={styles.rankingLikes}>{numLikes} likes</p>
-            <p class={styles.numUploads}>{numUploads} Uploads</p>
+            <div className={styles.statsDiv}>
+            <p className={styles.rankingLikes}>{numLikes} likes</p>
+            <p className={styles.numUploads}>{numUploads} Uploads</p>
             </div>
 
-            <Link to="/make" class={styles.uploadButton}>New Meme</Link>
+            <Link to="/make" className={styles.uploadButton}>New Meme</Link>
         </div>
 
         {/* Meme Gallery */}
