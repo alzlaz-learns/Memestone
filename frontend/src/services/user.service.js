@@ -23,6 +23,10 @@ class UserService {
   getUserName(userID) {
     return http.get(API_URL + 'getUserName?user='+userID, { headers: authHeader() });
   }
+
+  getUserID(username) {
+    return http.get(API_URL + 'getUserID?user='+username, { headers: authHeader() });
+  }
 }
 
 export default new UserService();

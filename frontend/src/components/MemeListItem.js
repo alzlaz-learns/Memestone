@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import { Link } from "react-router-dom";
 import styles from './css/MemeListItem.module.css';
 import InteractionService from "../services/interaction.service";
 import UserService from "../services/user.service";
@@ -49,7 +50,7 @@ export default class MemeListItem extends Component {
                 <img src={meme.url} className={styles.memeImage} alt=""></img>
                 <div>
                     {(this.rank) ? <span className={styles.rankNumber}>#{this.rank}</span> : null}
-                    <span className={styles.memeUser}>@{username}</span>
+                    <Link to={"/profile?user="+username}><span className={styles.memeUser}>@{username}</span></Link>
                     <span className={styles.memeLikes}>♥ {meme.likes} like{(meme.likes === 1)?"":"s"}</span>
                     <a className={styles.likeButton} onClick={this.LikeMeme}>{(isLiked) ? "unlike" : "like"}</a>
                 </div>

@@ -45,7 +45,7 @@ export default class BoardUser extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container" key={Date.now()}>
         <header className="jumbotron">
           <h3>{this.state.content}</h3>
           <h3>
