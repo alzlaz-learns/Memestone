@@ -4,6 +4,7 @@ import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 
 import UploadImages from "./upload-files.component";
+import MemeMaker from "./MemeMaker";
 
 /*
 uploading bs
@@ -45,15 +46,9 @@ export default class BoardUser extends Component {
 
   render() {
     return (
-      <div className="container" key={Date.now()}>
-        <header className="jumbotron">
-          <h3>{this.state.content}</h3>
-          <h3>
-            this is where upload is going to be
-            board-user.component
+      <div className="content" key={Date.now()}>
             <UploadImages />
-          </h3>
-        </header>
+            <MemeMaker />
       </div>
     );
   }

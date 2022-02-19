@@ -16,17 +16,20 @@
 .statsDiv {
     font-size: large;
     margin: 5px;
-    padding-right: 1em;
-    flex-grow: 0.25;
+    flex-grow: 0.1;
 }
 
 .rankingLikes {
     border: 0.1em solid black;
-    padding: 5px;
+    background-color: white;
+    border-radius: 4px;
+    padding: 0.5em;
 }
 .numUploads {
     border: 0.1em solid black;
-    padding: 5px;
+    background-color: white;
+    border-radius: 4px;
+    padding: 0.5em;
 }
 
 .userRanking {

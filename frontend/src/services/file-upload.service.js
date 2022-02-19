@@ -3,9 +3,8 @@ class FileUploadService {
   // upload(file, onUploadProgress) {
   upload(file, additional, onUploadProgress) { //al customizing parameters to see if we can add more to file
     let formData = new FormData();
-    formData.append("file", file);
-    console.log("this is line 8 of file-upload.service.js");
-
+    if (file instanceof Blob) formData.append("file", file, "imgflip.jpg");
+    else formData.append("file", file);
 
     const map = new Map(Object.entries(additional)); // Map(2) {"foo" => "bar", "baz" => 42}
     // console.log(map)

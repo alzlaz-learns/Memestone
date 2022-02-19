@@ -77,7 +77,7 @@ export default class Profile extends Component {
         {(this.state.userReady) ?
         <div>
         {/* Info bar above gallery */}
-        <div className={styles.topBar}>
+        <div className={styles.topBar + " jumbotron"}>
             <img src= {profilePicture} className={styles.profilePicture} alt="User Icon"></img>
             <p className={styles.username}>@{user.username}</p>
 

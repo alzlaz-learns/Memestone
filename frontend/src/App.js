@@ -80,7 +80,7 @@ class App extends Component {
             {/* Account-Locked options */}
             {currentUser && ([
               <li className="nav-item">
-                <Link to={"/user"} className="nav-link">upload</Link>
+                <Link to={"/new"} className="nav-link">New Meme</Link>
               </li>,
               <li className="nav-item">
                 <Link to={"/top"} className="nav-link">Top Ranked</Link>
@@ -123,7 +123,7 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
-            <Route path="/user" component={BoardUser} />
+            <Route path="/new" component={BoardUser} />
             <Route path="/mod" component={BoardModerator} />
             <Route path="/admin" component={BoardAdmin} />
             <Route exact path="/top" component={TopRanked} />
