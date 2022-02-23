@@ -12,6 +12,12 @@ export const PageType = {
     PROFILE: 3
 }
 
+/* 
+* The Meme Gallery component displays a list of memes
+* Properties:
+*   pageType - indicates which query to send to the database, whether it be for the top memes, liked memes, or memes by user
+*   byUser - only applies to PageType.PROFILE, which user to fetch data for
+*/
 export default class MemeGallery extends Component {
     constructor(props) {
         super(props);
@@ -32,6 +38,7 @@ export default class MemeGallery extends Component {
         this._isMounted = true;
         const baseUrl = "http://localhost:8080/files/";
         
+        //Redirect to home if logged out
         const user = AuthService.getCurrentUser();
         if (!user) {
             this.setState({ redirect: "/" });
@@ -39,6 +46,7 @@ export default class MemeGallery extends Component {
         }
         const byUser = this.state.byUser ? this.state.byUser : user.id;
 
+        //Request memes from database API
         var data;
         switch(this.state.pageType) {
             case PageType.TOP_MEMES:
@@ -50,15 +58,13 @@ export default class MemeGallery extends Component {
             case PageType.PROFILE:
                 data = MemeService.getMemesByUser(byUser);
                 break;
-            case PageType.HOME:
-                data = MemeService.getNewMemesFor(byUser);
-                break;
             default:
                 data = MemeService.getMemes();
         }
+        //Handle response from API
         data.then((response) => {
-            //fix urls to be full paths
-            response.data.forEach(function(part, index) {
+            //Append full path to image URLS
+            response.data.forEach(function(part) {
                 part.url = baseUrl + part.url;
             });
 
@@ -67,6 +73,7 @@ export default class MemeGallery extends Component {
             });
         },
         error => {
+            //Handle errors
             alert((error.response &&
                   error.response.data &&
                   error.response.data.message) ||
@@ -81,10 +88,12 @@ export default class MemeGallery extends Component {
         this._isMounted && this.setState({currentUser: user, byUser: byUser, userReady: true});
     }
 
+    //Mark component as unmounted in order to prevent updating state on unmounted component
     componentWillUnmount() {
         this._isMounted = false;
     }
 
+    //Remove a meme from the list, either by deletion or disliking on the liked memes page
     removeMeme = (index) => {
         this.state.memes.splice(index, 1);
         this._isMounted && this.setState({
@@ -93,7 +102,7 @@ export default class MemeGallery extends Component {
     }
 
     render() {
-        if (this.state.redirect) {
+        if (this.state.redirect) { //Redirect if not authenticated
             return <Redirect to={this.state.redirect} />
         }
 
@@ -104,8 +113,13 @@ export default class MemeGallery extends Component {
                 {(userReady) ?
             <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 3, 1400: 4, 2000: 5}}>
                 <Masonry>
-                    { memes.map((meme, index) => <ListMeme meme={meme} pageType={this.state.pageType} index={index} key={meme.id} removeMeme={this.removeMeme}
-                    currentUser={currentUser}></ListMeme>) }
+                    { memes.map((meme, index) => <ListMeme
+                        meme={meme}
+                        pageType={this.state.pageType}
+                        index={index}
+                        key={meme.id}
+                        removeMeme={this.removeMeme}
+                        currentUser={currentUser}/>) }
                 </Masonry>
             </ResponsiveMasonry>
              : null }

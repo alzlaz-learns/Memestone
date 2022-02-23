@@ -3,6 +3,7 @@ const db = require("../models");
 const Meme = db.meme;
 const Likes = db.likes;
 
+//Check if a meme is liked by the current user
 const getLikes = (req, res) => {
   if (req.query.meme) {
       Likes.findOne({
@@ -14,6 +15,7 @@ const getLikes = (req, res) => {
   } else res.status(400).send("missing meme parameter");
 };
 
+//Submit a like for a specific meme on the server
 const submitLike = async (req, res) => {
   const entry = await Likes.findOne({
     where: {
@@ -60,7 +62,7 @@ const deleteMeme = async (req, res) => {
       poster_id: req.userId,
       id: req.body.meme
     }
-  }).then(meme => {
+  }).then(() => {
     //Remove references from likes table if the delete succeeded
     Likes.destroy({
       where: {

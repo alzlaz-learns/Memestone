@@ -4,6 +4,9 @@ import SwipeComponent from './SwipeComponent';
 import authService from '../services/auth.service';
 import bigLogo from '../assets/logo_big.png';
 
+/*
+* Home page gateway, displaying the SwipeComponent when logged in and a welcome message when logged out
+*/
 export default class Home extends React.Component{
     constructor(props) {
         super(props);

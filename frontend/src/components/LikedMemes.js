@@ -1,6 +1,9 @@
 import React from 'react';
 import MemeGallery, {PageType} from './MemeGallery';
 
+/*
+* Liked Memes Page, showing a list of the memes the currently logged in user liked
+*/
 export default class LikedMemes extends React.Component{
     render() {
         return (

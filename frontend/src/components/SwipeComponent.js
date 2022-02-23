@@ -8,6 +8,10 @@ import InteractionService from "../services/interaction.service";
 
 var db = []
 
+/*
+* SwipeComponent is the home page when a user is currently logged in.
+* Displays a list of recent memes to a user to swipe through in the form of dating app-style cards
+*/
 function SwipeComponent() {
   const baseUrl = "http://localhost:8080/files/";
 
