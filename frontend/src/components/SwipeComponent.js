@@ -117,7 +117,7 @@ function SwipeComponent() {
             <TinderCard
               ref={childRefs[index]}
               className={styles.swipe}
-              key={meme.name}
+              key={index}
               preventSwipe={["up", "down"]}
               onSwipe={(dir) => swiped(dir, meme.name, index)}
               onCardLeftScreen={() => outOfFrame(meme.name, index)}

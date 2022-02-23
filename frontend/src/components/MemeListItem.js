@@ -10,6 +10,8 @@ export default class MemeListItem extends Component {
     constructor(props) {
         super(props);
 
+        this._isMounted = false;
+
         this.state = {
             currentUser: this.props.currentUser,
             meme: this.props.meme,
@@ -19,12 +21,17 @@ export default class MemeListItem extends Component {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         InteractionService.isMemeLikedBy(this.state.meme.id, this.state.currentUser.id).then((response) => {
-            this.setState({isLiked: response.data.length === undefined});
+            this._isMounted && this.setState({isLiked: response.data.length === undefined});
         });
         UserService.getUserName(this.state.meme.poster_id).then((response) => {
-            this.setState({username: response.data[0].username});
+            this._isMounted && this.setState({username: response.data[0].username});
         });
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     LikeMeme = () => {
@@ -36,7 +43,7 @@ export default class MemeListItem extends Component {
             InteractionService.submitLike(this.state.meme.id, this.state.currentUser.id);
             newMeme.likes++;
         }
-        this.setState({isLiked: !this.state.isLiked, meme: newMeme});
+        this._isMounted && this.setState({isLiked: !this.state.isLiked, meme: newMeme});
     }
 
     render() {
