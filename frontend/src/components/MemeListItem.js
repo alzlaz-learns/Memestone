@@ -3,18 +3,23 @@ import { Link } from "react-router-dom";
 import styles from './css/MemeListItem.module.css';
 import InteractionService from "../services/interaction.service";
 import UserService from "../services/user.service";
+import {PageType} from './MemeGallery';
 
 export default class MemeListItem extends Component {
-    rank;
+    removeMeme;
+    index;
 
     constructor(props) {
         super(props);
 
         this._isMounted = false;
+        this.removeMeme = props.removeMeme;
+        this.index = props.index;
 
         this.state = {
             currentUser: this.props.currentUser,
             meme: this.props.meme,
+            pageType: this.props.pageType,
             isLiked: 0,
             username: ""
         };
@@ -39,6 +44,7 @@ export default class MemeListItem extends Component {
         if (this.state.isLiked) {
             InteractionService.submitDislike(this.state.meme.id);
             newMeme.likes--;
+            if (this.state.pageType === PageType.LIKED_MEMES) this.removeMeme(this.index);
         } else {
             InteractionService.submitLike(this.state.meme.id);
             newMeme.likes++;
@@ -48,6 +54,7 @@ export default class MemeListItem extends Component {
 
     DeleteMeme = () => {
         InteractionService.deleteMeme(this.state.meme.id);
+        
     }
 
     render() {
@@ -61,11 +68,11 @@ export default class MemeListItem extends Component {
             <div className={styles.memeDiv}>
                 <img src={meme.url} className={styles.memeImage} alt=""></img>
                 <div>
-                    {(this.rank) ? <span className={styles.rankNumber}>#{this.rank}</span> : null}
                     <Link to={"/profile?user="+username}><span className={styles.memeUser}>@{username}</span></Link>
                     <span className={styles.memeLikes}>♥ {meme.likes} like{(meme.likes === 1)?"":"s"}</span>
                     <button className={styles.likeButton} onClick={this.LikeMeme}>{(isLiked) ? "unlike" : "like"}</button>
-                    <button className={styles.deleteButton} onClick={this.DeleteMeme}>delete</button>
+                    {this.state.currentUser.username === username ?
+                    <button className={styles.deleteButton} onClick={this.DeleteMeme}>delete</button>: null }
                 </div>
             </div>
         );

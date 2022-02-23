@@ -78,19 +78,19 @@ export default class MemeGallery extends Component {
             }
         });
 
-        this.setState({currentUser: user, byUser: byUser, userReady: true});
+        this._isMounted && this.setState({currentUser: user, byUser: byUser, userReady: true});
     }
 
     componentWillUnmount() {
         this._isMounted = false;
     }
 
-    //Needs to be a lambda function or the page freezes! Don't change it!
-    /*RemoveMemeTest = () => {
-        this.setState({
-            memes: this.state.memes.splice(0, this.state.memes.length-1)
+    removeMeme = (index) => {
+        this.state.memes.splice(index, 1);
+        this._isMounted && this.setState({
+            memes: this.state.memes
         });
-    }*/
+    }
 
     render() {
         if (this.state.redirect) {
@@ -104,7 +104,7 @@ export default class MemeGallery extends Component {
                 {(userReady) ?
             <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 3, 1400: 4, 2000: 5}}>
                 <Masonry>
-                    { memes.map(meme => <ListMeme meme={meme} key={meme.id} 
+                    { memes.map((meme, index) => <ListMeme meme={meme} pageType={this.state.pageType} index={index} key={meme.id} removeMeme={this.removeMeme}
                     currentUser={currentUser}></ListMeme>) }
                 </Masonry>
             </ResponsiveMasonry>
