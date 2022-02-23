@@ -13,7 +13,7 @@ function SwipeComponent() {
 
   const [currentIndex, setCurrentIndex] = useState(db.length - 1);
   const [usernames, setUsernames] = useState([]);
-  const currentUser = AuthService.getCurrentUser();
+  var currentUser = AuthService.getCurrentUser();
   // used for outOfFrame closure
   const currentIndexRef = useRef(currentIndex)
 
@@ -25,42 +25,45 @@ function SwipeComponent() {
     []
   )
   
+  //Get list of memes from database
   useEffect(() => {
-  MemeService.getNewMemesFor(currentUser.id).then((response) => {
-    db = response.data;
+    MemeService.getNewMemesFor(currentUser.id).then((response) => {
+      db = response.data;
 
-    //fix urls to be full paths
+      //Fix meme image urls urls to be full paths
       response.data.forEach(function(part, index) {
-          part.url = baseUrl + part.url;
-          UserService.getUserName(part.poster_id).then((response) => {
-            usernames[index] = response.data[0].username;
-            setUsernames(usernames);
+      part.url = baseUrl + part.url;
+      UserService.getUserName(part.poster_id).then((response) => {
+        usernames[index] = response.data[0].username;
+        setUsernames(usernames);
 
-            //Update on last index
-            if (index === db.length - 1){
-              setCurrentIndex(db.length - 1);
-              setChildRefs(() =>
-                Array(db.length)
-                  .fill(0)
-                  .map((i) => React.createRef()),
-              []);
-            }
-            });
+        //Update the card references (only on the last index for optimization)
+        if (index === db.length - 1){
+          setCurrentIndex(db.length - 1);
+          setChildRefs(() =>
+            Array(db.length)
+            .fill(0)
+            .map((i) => React.createRef()),
+          []);
+        }
+        });
       });
-  });
-}, []);
+    });
+  }, []);
 
+  //Update current index in meme list
   const updateCurrentIndex = (val) => {
     setCurrentIndex(val)
     currentIndexRef.current = val
   }
 
   const canGoBack = currentIndex < db.length - 1
-
   const canSwipe = currentIndex >= 0
 
-  // set last direction and decrease current index
+  //Set last direction and decrease current index
   const swiped = (direction, nameToDelete, index) => {
+    currentUser = AuthService.getCurrentUser();
+    if (!currentUser) alert("logged out");
     updateCurrentIndex(index - 1)
     if (direction === "right") {
         LikeMeme(db[index]);
@@ -69,28 +72,29 @@ function SwipeComponent() {
     }
   }
 
+  //Called when a card leaves the frame
   const outOfFrame = (name, idx) => {
     currentIndexRef.current >= idx && childRefs[idx].current.restoreCard()
-    // TODO: when quickly swipe and restore multiple times the same card,
-    // it happens multiple outOfFrame events are queued and the card disappear
-    // during latest swipes. Only the last outOfFrame event should be considered valid
   }
 
+  //Swipes a card (used by buttons)
   const swipe = async (dir) => {
     if (canSwipe && currentIndex < db.length) {
       await childRefs[currentIndex].current.swipe(dir) // Swipe the card!
     }
   }
 
+  //Like the current meme
   const LikeMeme = (meme) => {
     InteractionService.submitLike(meme.id, currentUser.id);
   }
 
+  //Dislike the current meme
   const DislikeMeme = (meme) => {
     InteractionService.submitDislike(meme.id, currentUser.id);
   }
 
-  // increase current index and show card
+  //Increase current index and show card
   const goBack = async () => {
     if (!canGoBack) return
     const newIndex = currentIndex + 1
@@ -99,7 +103,7 @@ function SwipeComponent() {
   }
 
   return (
-    <div class="content">
+    <div className="content">
       <link
         href='https://fonts.googleapis.com/css?family=Damion&display=swap'
         rel='stylesheet'

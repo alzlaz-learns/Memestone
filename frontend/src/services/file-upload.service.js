@@ -1,4 +1,6 @@
 import http from "../http-common";
+import authHeader from './auth-header';
+
 class FileUploadService {
   // upload(file, onUploadProgress) {
   upload(file, additional, onUploadProgress) { //al customizing parameters to see if we can add more to file
@@ -21,7 +23,7 @@ class FileUploadService {
         "Content-Type": "multipart/form-data",
       },
       onUploadProgress,
-    });
+    }, { headers: authHeader() });
   }
   getFiles() {
     return http.get("/files");

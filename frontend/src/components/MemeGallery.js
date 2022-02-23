@@ -16,6 +16,8 @@ export default class MemeGallery extends Component {
     constructor(props) {
         super(props);
 
+        this._isMounted = false;
+
         this.state = {
             redirect: null,
             userReady: false,
@@ -27,6 +29,7 @@ export default class MemeGallery extends Component {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         const baseUrl = "http://localhost:8080/files/";
         
         const user = AuthService.getCurrentUser();
@@ -59,7 +62,7 @@ export default class MemeGallery extends Component {
                 part.url = baseUrl + part.url;
             });
 
-            this.setState({
+            this._isMounted && this.setState({
                 memes: response.data,
             });
         },
@@ -76,6 +79,10 @@ export default class MemeGallery extends Component {
         });
 
         this.setState({currentUser: user, byUser: byUser, userReady: true});
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     //Needs to be a lambda function or the page freezes! Don't change it!
