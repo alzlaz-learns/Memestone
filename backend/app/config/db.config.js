@@ -1,8 +1,8 @@
 module.exports = {
   HOST: "localhost",
-  USER: "root",
-  PASSWORD: "txaw3zs",
-  DB: "memestone_dev",
+  USER: "user1",
+  PASSWORD: "password1",
+  DB: "testdb",
   dialect: "mysql",
   pool: {
     max: 5,
