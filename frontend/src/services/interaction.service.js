@@ -3,21 +3,22 @@ import authHeader from './auth-header';
 
 class InteractionService {
   isMemeLikedBy(memeID, userID) {
-    return http.get("/api/likes?meme="+memeID+"&user="+userID, { headers: authHeader() });
+    return http.get("/api/likes?meme="+memeID, { headers: authHeader() });
   }
 
-  submitLike(meme, userID) {
-    return http.post("/api/like", {
-      userID,
-      meme
-    }, { headers: authHeader() });
+  //Submit a like to the database
+  submitLike(meme) {
+    return http.post("/api/like", { meme }, { headers: authHeader() });
   }
 
-  submitDislike(meme, userID) {
-    return http.post("/api/dislike", {
-      userID,
-      meme
-    }, { headers: authHeader() });
+  //Submit a dislike to the database
+  submitDislike(meme) {
+    return http.post("/api/dislike", { meme }, { headers: authHeader() });
+  }
+
+  //Delete a meme from the database
+  deleteMeme(meme) {
+    return http.post("/api/deleteMeme", { meme }, { headers: authHeader() });
   }
 }
 export default new InteractionService();

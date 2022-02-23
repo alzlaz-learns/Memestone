@@ -86,12 +86,12 @@ function SwipeComponent() {
 
   //Like the current meme
   const LikeMeme = (meme) => {
-    InteractionService.submitLike(meme.id, currentUser.id);
+    InteractionService.submitLike(meme.id);
   }
 
   //Dislike the current meme
   const DislikeMeme = (meme) => {
-    InteractionService.submitDislike(meme.id, currentUser.id);
+    InteractionService.submitDislike(meme.id);
   }
 
   //Increase current index and show card

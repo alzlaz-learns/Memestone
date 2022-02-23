@@ -45,7 +45,7 @@ export default class MemeGallery extends Component {
                 data = MemeService.getTopMemes();
                 break;
             case PageType.LIKED_MEMES:
-                data = MemeService.getLikedMemes(user.id);
+                data = MemeService.getLikedMemes();
                 break;
             case PageType.PROFILE:
                 data = MemeService.getMemesByUser(byUser);

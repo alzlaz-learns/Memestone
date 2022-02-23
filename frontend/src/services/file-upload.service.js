@@ -17,10 +17,12 @@ class FileUploadService {
     //for(var pair of formData.entries()) {
     //  console.log(pair[0]+ ', '+ pair[1]);
     //}
-
+    const user = JSON.parse(localStorage.getItem('user'));
+    
     return http.post("/upload?date="+Date.now(), formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        'x-access-token': user.accessToken
       },
       onUploadProgress,
     }, { headers: authHeader() });

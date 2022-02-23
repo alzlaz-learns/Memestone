@@ -14,8 +14,8 @@ class MemeService {
     return http.get("/api/memes?byUser="+userID, { headers: authHeader() });
   }
 
-  getLikedMemes(userID) {
-    return http.get("/api/memes?likedBy="+userID, { headers: authHeader() });
+  getLikedMemes() {
+    return http.get("/api/memes?liked", { headers: authHeader() });
   }
 
   getNewMemesFor(userID) {

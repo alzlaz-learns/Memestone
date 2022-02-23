@@ -5,28 +5,26 @@ const Likes = db.likes;
 
 const getLikes = (req, res) => {
   if (req.query.meme) {
-    if (req.query.user) {
       Likes.findOne({
         where: {
-          userID: req.query.user,
+          userID: req.userId,
           memeID: req.query.meme
         }
       }).then(memes => res.status(200).send(memes));
-    } else res.status(400).send("missing user parameter");
-  }
+  } else res.status(400).send("missing meme parameter");
 };
 
 const submitLike = async (req, res) => {
   const entry = await Likes.findOne({
     where: {
-      userID: req.body.userID,
+      userID: req.userId,
       memeID: req.body.meme
     }
   });
 
   if (entry === null) { //Not already liked
     Likes.create({
-      userID: req.body.userID,
+      userID: req.userId,
       memeID: req.body.meme
     });
     //Increment like count for meme
@@ -34,10 +32,11 @@ const submitLike = async (req, res) => {
   }
 }
 
+//Submit a dislike for a specific meme on the server
 const submitDislike = async (req, res) => {
   const entry = await Likes.findOne({
     where: {
-      userID: req.body.userID,
+      userID: req.userId,
       memeID: req.body.meme
     }
   });
@@ -45,7 +44,7 @@ const submitDislike = async (req, res) => {
   if (entry !== null) { //Already liked
     Likes.destroy({
       where: {
-        userID: req.body.userID,
+        userID: req.userId,
         memeID: req.body.meme
       }
     });
@@ -54,8 +53,26 @@ const submitDislike = async (req, res) => {
   }
 }
 
+//Delete a meme from the database
+const deleteMeme = async (req, res) => {
+  Meme.destroy({
+    where: {
+      poster_id: req.userId,
+      id: req.body.meme
+    }
+  }).then(meme => {
+    //Remove references from likes table if the delete succeeded
+    Likes.destroy({
+      where: {
+        memeID: req.body.meme
+      }
+    })
+  });
+}
+
 module.exports = {
   getLikes,
   submitLike,
-  submitDislike
+  submitDislike,
+  deleteMeme
 };

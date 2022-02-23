@@ -22,7 +22,7 @@ export default class MemeListItem extends Component {
 
     componentDidMount() {
         this._isMounted = true;
-        InteractionService.isMemeLikedBy(this.state.meme.id, this.state.currentUser.id).then((response) => {
+        InteractionService.isMemeLikedBy(this.state.meme.id).then((response) => {
             this._isMounted && this.setState({isLiked: response.data.length === undefined});
         });
         UserService.getUserName(this.state.meme.poster_id).then((response) => {
@@ -37,13 +37,17 @@ export default class MemeListItem extends Component {
     LikeMeme = () => {
         let newMeme = Object.assign({}, this.state.meme);
         if (this.state.isLiked) {
-            InteractionService.submitDislike(this.state.meme.id, this.state.currentUser.id);
+            InteractionService.submitDislike(this.state.meme.id);
             newMeme.likes--;
         } else {
-            InteractionService.submitLike(this.state.meme.id, this.state.currentUser.id);
+            InteractionService.submitLike(this.state.meme.id);
             newMeme.likes++;
         }
         this._isMounted && this.setState({isLiked: !this.state.isLiked, meme: newMeme});
+    }
+
+    DeleteMeme = () => {
+        InteractionService.deleteMeme(this.state.meme.id);
     }
 
     render() {
@@ -61,6 +65,7 @@ export default class MemeListItem extends Component {
                     <Link to={"/profile?user="+username}><span className={styles.memeUser}>@{username}</span></Link>
                     <span className={styles.memeLikes}>♥ {meme.likes} like{(meme.likes === 1)?"":"s"}</span>
                     <button className={styles.likeButton} onClick={this.LikeMeme}>{(isLiked) ? "unlike" : "like"}</button>
+                    <button className={styles.deleteButton} onClick={this.DeleteMeme}>delete</button>
                 </div>
             </div>
         );
