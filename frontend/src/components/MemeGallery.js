@@ -109,9 +109,10 @@ export default class MemeGallery extends Component {
 
     //Remove a meme from the list, either by deletion or disliking on the liked memes page
     removeMeme = (index) => {
-        this.state.memes.splice(index, 1);
+        let memes = this.state.pages[this.state.page];
+        memes.splice(index, 1);
         this._isMounted && this.setState({
-            memes: this.state.memes
+            pages: this.state.pages
         });
     }
 
