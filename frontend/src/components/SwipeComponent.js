@@ -16,7 +16,8 @@ function SwipeComponent() {
   const currentUser = AuthService.getCurrentUser();
   // used for outOfFrame closure
   const currentIndexRef = useRef(currentIndex)
-
+  
+  
   const [childRefs, setChildRefs] = useState(
     () =>
       Array(db.length)
@@ -29,6 +30,8 @@ function SwipeComponent() {
   MemeService.getNewMemesFor(currentUser.id).then((response) => {
     db = response.data;
 
+
+    
     //fix urls to be full paths
       response.data.forEach(function(part, index) {
           part.url = baseUrl + part.url;
@@ -61,10 +64,12 @@ function SwipeComponent() {
 
   // set last direction and decrease current index
   const swiped = (direction, nameToDelete, index) => {
+
     updateCurrentIndex(index - 1)
     if (direction === "right") {
         LikeMeme(db[index]);
     } else {
+      
         DislikeMeme(db[index]);
     }
   }

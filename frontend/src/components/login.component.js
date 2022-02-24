@@ -5,6 +5,7 @@ import CheckButton from "react-validation/build/button";
 
 import AuthService from "../services/auth.service";
 
+
 const required = value => {
   if (!value) {
     return (
@@ -22,12 +23,35 @@ export default class Login extends Component {
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
 
+    this.isLoggedIn = this.isLoggedIn.bind(this);
+
     this.state = {
       username: "",
       password: "",
       loading: false,
-      message: ""
+      message: "",
+      redirect: null,
+      currentUser: null
     };
+  }
+  
+  componentDidMount() {
+    const currentUser = AuthService.getCurrentUser();
+    if (currentUser!==null) {
+      this.setState({ redirect: true });
+      // alert(currentUser);
+    }
+  }
+
+  isLoggedIn(e){
+    const user = AuthService.getCurrentUser();
+    console.log(user.id);
+    alert(user.id);
+    if (user.id !== null){
+      console.log(user.id)
+      alert(user.id);
+      this.setState({redirect: true});
+    }
   }
 
   onChangeUsername(e) {
@@ -80,6 +104,9 @@ export default class Login extends Component {
   }
 
   render() {
+    if (this.state.redirect) {
+      this.props.history.push("/home");
+    }
     return (
       <div className="col-md-12">
         <div className="card card-container">

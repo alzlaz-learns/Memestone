@@ -59,10 +59,19 @@ export default class Register extends Component {
       email: "",
       password: "",
       successful: false,
-      message: ""
+      message: "",
+      redirect: null,
+      currentUser: null
     };
   }
 
+  componentDidMount() {
+    const currentUser = AuthService.getCurrentUser();
+    if (currentUser!==null) {
+      this.setState({ redirect: true });
+      // alert(currentUser);
+    }
+  }
   onChangeUsername(e) {
     this.setState({
       username: e.target.value
@@ -121,6 +130,11 @@ export default class Register extends Component {
   }
 
   render() {
+
+    if (this.state.redirect) {
+      this.props.history.push("/home");
+    }
+
     return (
       <div className="col-md-12">
         <div className="card card-container">
