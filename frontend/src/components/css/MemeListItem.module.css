@@ -47,3 +47,15 @@
 .likeButton:hover {
     color: blue;
 }
+
+.deleteButton {
+    float: right;
+    margin-right: 1em;
+    background: none;
+    border: none;
+    color: royalblue;
+}
+
+.deleteButton:hover {
+    color: blue;
+}
