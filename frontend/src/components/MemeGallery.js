@@ -5,6 +5,7 @@ import MemeService from "../services/meme.service";
 import ListMeme from './MemeListItem';
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry";
 import EventBus from "../common/EventBus";
+import styles from "./css/MemeGallery.module.css";
 
 export const PageType = {
     TOP_MEMES: 1,
@@ -19,6 +20,8 @@ export const PageType = {
 *   byUser - only applies to PageType.PROFILE, which user to fetch data for
 */
 export default class MemeGallery extends Component {
+    numItemsPerPage = 20;
+
     constructor(props) {
         super(props);
 
@@ -26,11 +29,13 @@ export default class MemeGallery extends Component {
 
         this.state = {
             redirect: null,
-            userReady: false,
+            ready: 0,
             currentUser: {userID: -1},
             pageType: props.pageType,
             byUser: props.byUser,
-            memes: []
+            pages: [],
+            page: 0,
+            pageCount: 0
         };
     }
 
@@ -68,8 +73,17 @@ export default class MemeGallery extends Component {
                 part.url = baseUrl + part.url;
             });
 
+            //Split list of memes into pages
+            let count = Math.ceil(response.data.length / this.numItemsPerPage)
+            let array = []
+            for (let i = 0; i < count; i++) {
+                array.push(response.data.splice(0, this.numItemsPerPage));
+            }
+            
             this._isMounted && this.setState({
-                memes: response.data,
+                pages: array,
+                pageCount: count - 1,
+                ready: this.state.ready + 1
             });
         },
         error => {
@@ -85,7 +99,7 @@ export default class MemeGallery extends Component {
             }
         });
 
-        this._isMounted && this.setState({currentUser: user, byUser: byUser, userReady: true});
+        this._isMounted && this.setState({currentUser: user, byUser: byUser, ready: this.state.ready + 1});
     }
 
     //Mark component as unmounted in order to prevent updating state on unmounted component
@@ -101,29 +115,52 @@ export default class MemeGallery extends Component {
         });
     }
 
+    //Change page
+    changePage = (newPage) => {
+        newPage = Math.max(0, Math.min(newPage, this.state.pageCount));
+        this._isMounted && this.setState({
+            page: newPage
+        });
+        //Scroll back to top
+        window.scrollTo(0, 0);
+    }
+
     render() {
         if (this.state.redirect) { //Redirect if not authenticated
             return <Redirect to={this.state.redirect} />
         }
 
-        const { currentUser, memes, userReady} = this.state;
-
+        const { currentUser, pages, ready, page, pageCount} = this.state;
+        var memes = pages[page];
+        
+        if (ready > 1) //If both user and meme content is loaded
         return (
             <div>
-                {(userReady) ?
-            <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 3, 1400: 4, 2000: 5}}>
-                <Masonry>
-                    { memes.map((meme, index) => <ListMeme
-                        meme={meme}
-                        pageType={this.state.pageType}
-                        index={index}
-                        key={meme.id}
-                        removeMeme={this.removeMeme}
-                        currentUser={currentUser}/>) }
-                </Masonry>
-            </ResponsiveMasonry>
-             : null }
+                <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 3, 1400: 4, 2000: 5}}>
+                    <Masonry>
+                        { memes.map((meme, index) =>
+                        <ListMeme
+                            meme={meme}
+                            pageType={this.state.pageType}
+                            index={index}
+                            key={meme.id}
+                            removeMeme={this.removeMeme}
+                            currentUser={currentUser}/>) }
+                    </Masonry>
+                </ResponsiveMasonry>
+                {pageCount > 0 ?
+                <div className={styles.pageDiv}>
+                    {page > 0 ?
+                    <button className={styles.prevButton + " btn btn-primary"} onClick={() => this.changePage(page - 1)}>Previous</button>
+                    : null}
+                    <span className={styles.pageNumber}>{page + 1}</span>
+                    {page < pageCount ?
+                    <button className={styles.nextButton + " btn btn-primary"} onClick={() => this.changePage(page + 1)}>Next</button>
+                    : null}
+                </div>
+                : null}
             </div>
         );
+        else return null;
     }
 }
