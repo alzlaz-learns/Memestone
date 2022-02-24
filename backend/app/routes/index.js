@@ -29,6 +29,7 @@ let routes = (app) => {
   router.get("/api/likes", [authJwt.verifyToken], interactionController.getLikes);
   router.post("/api/like", [authJwt.verifyToken], interactionController.submitLike);
   router.post("/api/dislike", [authJwt.verifyToken], interactionController.submitDislike);
+  router.post("/api/markViewed", [authJwt.verifyToken], interactionController.viewMeme);
   router.post("/api/deleteMeme", [authJwt.verifyToken], interactionController.deleteMeme);
   //Stats
   router.get("/api/stats/numLikes", [authJwt.verifyToken], statsController.getNumLikes);

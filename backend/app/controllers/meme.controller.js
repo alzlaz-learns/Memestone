@@ -39,11 +39,14 @@ const getMemes = (req, res) => {
     }).then(memes => res.status(200).send(memes));
   }
   //Get front page memes for a given user (/api/memes?newMemesFor='userID')
-  else if (req.query.newMemesFor) {
+  else if (req.query.newMemesFor != null) {
     Meme.findAll({
       where: {
+        id: {
+          [Sequelize.Op.notIn]: sequelize.literal("(select memeID from viewed where userID="+req.userId+")")
+        },
         poster_id: {
-          [Sequelize.Op.not]: req.query.newMemesFor
+          [Sequelize.Op.not]: req.userId
         }
       },
       order: [

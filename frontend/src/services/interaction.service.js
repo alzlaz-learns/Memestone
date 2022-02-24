@@ -16,6 +16,11 @@ class InteractionService {
     return http.post("/api/dislike", { meme }, { headers: authHeader() });
   }
 
+  //Mark a meme as viewed by the current user in the database
+  markViewed(meme) {
+    return http.post("/api/markViewed", { meme }, { headers: authHeader() });
+  }
+
   //Delete a meme from the database
   deleteMeme(meme) {
     return http.post("/api/deleteMeme", { meme }, { headers: authHeader() });

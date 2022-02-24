@@ -2,6 +2,7 @@ const { Sequelize, sequelize } = require("../models");
 const db = require("../models");
 const Meme = db.meme;
 const Likes = db.likes;
+const Viewed = db.viewed;
 
 //Check if a meme is liked by the current user
 const getLikes = (req, res) => {
@@ -55,6 +56,20 @@ const submitDislike = async (req, res) => {
   }
 }
 
+const viewMeme = async (req, res) => {
+  //Mark meme as viewed
+  Viewed.findOrCreate({
+    where: {
+      userID: req.userId,
+      memeID: req.body.meme
+    },
+    defaults: {
+      userID: req.userID,
+      memeID: req.body.meme
+    }
+  });
+}
+
 //Delete a meme from the database
 const deleteMeme = async (req, res) => {
   Meme.destroy({
@@ -76,5 +91,6 @@ module.exports = {
   getLikes,
   submitLike,
   submitDislike,
+  viewMeme,
   deleteMeme
 };

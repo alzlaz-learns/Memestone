@@ -75,12 +75,18 @@ function SwipeComponent() {
   const swiped = (direction, nameToDelete, index) => {
     currentUser = AuthService.getCurrentUser();
     if (!currentUser) alert("logged out");
-    updateCurrentIndex(index - 1)
+    updateCurrentIndex(index - 1);
+
+    let meme = db[index];
     if (direction === "right") {
-        LikeMeme(db[index]);
+      //Swipe right likes the current meme
+      InteractionService.submitLike(meme.id);
     } else {
-        DislikeMeme(db[index]);
+      //Swipe left dislikes the current meme
+      InteractionService.submitDislike(meme.id);
     }
+    //Mark this meme as viewed so it will not be shown again
+    InteractionService.markViewed(meme.id);
   }
 
   //Called when a card leaves the frame
@@ -93,16 +99,6 @@ function SwipeComponent() {
     if (canSwipe && currentIndex < db.length) {
       await childRefs[currentIndex].current.swipe(dir) // Swipe the card!
     }
-  }
-
-  //Like the current meme
-  const LikeMeme = (meme) => {
-    InteractionService.submitLike(meme.id);
-  }
-
-  //Dislike the current meme
-  const DislikeMeme = (meme) => {
-    InteractionService.submitDislike(meme.id);
   }
 
   //Increase current index and show card

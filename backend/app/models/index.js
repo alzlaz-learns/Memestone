@@ -15,6 +15,10 @@ const sequelize = new Sequelize(
       min: config.pool.min,
       acquire: config.pool.acquire,
       idle: config.pool.idle
+    },
+    define: {
+      //prevent sequelize from pluralizing table names
+      freezeTableName: true
     }
   }
 );
@@ -31,6 +35,7 @@ db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.images = require("./image.model.js")(sequelize, Sequelize);
 db.meme = require("./meme.model.js")(sequelize, Sequelize);
 db.likes = require("./likes.model.js")(sequelize, Sequelize);
+db.viewed = require("./viewed.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
