@@ -2,12 +2,12 @@ const { Sequelize, sequelize } = require("../models");
 const db = require("../models");
 const Meme = db.meme;
 
+//Get a list of like counts for a user, used for sum total number of likes as well as number of memes uploaded
 const getNumLikes = (req, res) => {
   if (req.query.user != null) {
     Meme.findAll({
       attributes: [
         'likes'
-        //[sequelize.fn('sum', sequelize.col('likes')), 'num']
       ],
       where: {
         poster_id: req.query.user

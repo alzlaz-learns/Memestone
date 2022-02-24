@@ -1,6 +1,9 @@
 import React from 'react';
 import MemeGallery, {PageType} from './MemeGallery';
 
+/*
+* Top Ranked Page, showing a list of the most popular memes in the database (by number of likes)
+*/
 export default class TopRanked extends React.Component{
     render() {
         return (
