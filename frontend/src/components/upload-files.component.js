@@ -7,6 +7,9 @@ import { Redirect } from "react-router-dom";
 export default class UploadImages extends Component {
   constructor(props) {
     super(props);
+
+    this._isMounted = false;
+
     this.selectFile = this.selectFile.bind(this);
     this.upload = this.upload.bind(this);
 
@@ -31,22 +34,27 @@ export default class UploadImages extends Component {
 
 
   componentDidMount() {
+    this._isMounted = true;
     const currentUser = AuthService.getCurrentUser();
 
-    if (!currentUser) this.setState({ redirect: "/login" });
+    if (!currentUser) this._isMounted && this.setState({ redirect: "/login" });
 
     UploadService.getFiles().then((response) => {
-      this.setState({
+      this._isMounted && this.setState({
         imageInfos: response.data,
       });
     });
-    this.setState({ currentUser: currentUser, userReady: true });
+    this._isMounted && this.setState({ currentUser: currentUser, userReady: true });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
 
 
   selectFile(event) {
-    this.setState({
+    this._isMounted && this.setState({
       currentFile:  event.target.files[0],
       previewImage: URL.createObjectURL(event.target.files[0]),
       progress: 0,
@@ -58,7 +66,7 @@ export default class UploadImages extends Component {
   }
 
   upload() {
-    this.setState({
+    this._isMounted && this.setState({
       progress: 0,
     });
 
@@ -72,19 +80,19 @@ export default class UploadImages extends Component {
     },(event) => {
 
 
-      this.setState({
+      this._isMounted && this.setState({
         progress: Math.round((100 * event.loaded) / event.total),
       });
     })
       .then((response) => {
-        this.setState({
+        this._isMounted && this.setState({
           message: response.data.message,
           
         });
         return UploadService.getFiles();
       })
       .then((files) => {
-        this.setState({
+        this._isMounted && this.setState({
           imageInfos: files.data,
           
         });
@@ -93,7 +101,7 @@ export default class UploadImages extends Component {
 
       })
       .catch((err) => {
-        this.setState({
+        this._isMounted && this.setState({
           progress: 0,
           message: "Could not upload the image!",
           currentFile: undefined,

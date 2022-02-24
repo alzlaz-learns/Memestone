@@ -7,6 +7,10 @@ import styles from "./css/UserProfile.module.css";
 import profilePicture from '../assets/profile.png';
 import statsService from "../services/stats.service";
 
+/*
+* Profile Page, showing statistics and memes uploaded by a user
+* If there is no username specificied in the query (e.g. /profile?user=username), then it shows the currently logged in user
+*/
 export default class Profile extends Component {
   constructor(props) {
     super(props);
@@ -32,8 +36,13 @@ export default class Profile extends Component {
       username: params.get("user")
     };
 
-    if (user.username === null) user = currentUser;
-    else {
+    //If the username is not provided in the query, use the currently logged in user.
+    if (user.username === null) {
+      user = currentUser;
+      this.getUserStats(user.id);
+      this.setState({ user: user, userReady: true})
+    } else {
+      //Retrieve user ID from database
       UserService.getUserID(user.username).then((response) => {
         let id = response.data[0].id;
         this.setState({user: {
@@ -45,17 +54,13 @@ export default class Profile extends Component {
         this.getUserStats(id);
       });
     }
-
-    if (user.id) {
-      this.getUserStats(user.id);
-      this.setState({ user: user, userReady: true})
-    }
   }
 
+  //Get user statistics from the database (number of uploads, total number of likes on uploads)
   getUserStats(userID) {
     statsService.getNumLikes(userID).then((response) => {
       var likes = 0;
-      for (var i=0; i<response.data.length; i++) {
+      for (let i=0; i<response.data.length; i++) {
           likes += response.data[i].likes;
       }
       this.setState({

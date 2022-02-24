@@ -1,12 +1,46 @@
 import React from 'react';
-import MemeGallery, {PageType} from './MemeGallery';
+import {Link} from 'react-router-dom';
+import SwipeComponent from './SwipeComponent';
+import authService from '../services/auth.service';
+import bigLogo from '../assets/logo_big.png';
 
-export default class TopRanked extends React.Component{
+/*
+* Home page gateway, displaying the SwipeComponent when logged in and a welcome message when logged out
+*/
+export default class Home extends React.Component{
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+          signedIn: false
+        };
+      }
+    
+      componentDidMount() {
+        let user = authService.getCurrentUser();
+        if (user) {
+            this.setState({
+                signedIn: true
+              });
+        }
+      }
+    
     render() {
+        if (!this.state.signedIn)
         return (
-            <div className="content">
+            <div className="content" key={Date.now()}>
+                <h3>Welcome!</h3>
+                <br/>
+                <Link to="/login" className="btn btn-primary" style={{marginRight: "5px"}}>Log in</Link>
+                <Link to="/register" className="btn btn-primary">Register</Link>
+                <img src={bigLogo} alt="Website logo" style={{width: "300px", display: "block"}}></img>
+            </div>
+        );
+
+        return (
+            <div className="content" key={Date.now()}>
                 <h4>Home</h4>
-                <MemeGallery pageType={PageType.HOME}></MemeGallery>
+                <SwipeComponent></SwipeComponent>
             </div>
         );
     }

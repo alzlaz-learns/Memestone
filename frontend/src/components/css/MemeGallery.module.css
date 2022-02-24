@@ -1,0 +1,22 @@
+.pageDiv {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    height: 5em;
+}
+
+.prevButton {
+    margin: 1em;
+    padding: 0.5em 2em;
+}
+
+.nextButton {
+    margin: 1em;
+    padding: 0.5em 2em;
+}
+
+.pageNumber {
+    font-size: larger;
+    vertical-align: middle;
+    line-height: 4em;
+}
