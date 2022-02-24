@@ -38,10 +38,13 @@ export default class MemeListItem extends Component {
         InteractionService.isMemeLikedBy(this.state.meme.id).then((response) => {
             this._isMounted && this.setState({isLiked: response.data.length === undefined});
         });
-        //TODO: Cache the username in the UserService to prevent unnecessary calls to the database
-        UserService.getUserName(this.state.meme.poster_id).then((response) => {
+        
+        //Usernames fetched from service can either be of type promise (for database polling) or string (if cached)
+        let serviceResponse = UserService.getUserName(this.state.meme.poster_id);
+        if (serviceResponse instanceof Promise) serviceResponse.then((response) => {
             this._isMounted && this.setState({username: response.data[0].username});
         });
+        else this._isMounted && this.setState({username: serviceResponse});
     }
 
     //Mark component as unmounted in order to prevent updating state on unmounted component

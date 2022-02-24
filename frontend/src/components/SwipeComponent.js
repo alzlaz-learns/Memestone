@@ -16,7 +16,7 @@ function SwipeComponent() {
   const baseUrl = "http://localhost:8080/files/";
 
   const [currentIndex, setCurrentIndex] = useState(db.length - 1);
-  const [usernames, setUsernames] = useState([]);
+  const [usernames] = useState([]);
   var currentUser = AuthService.getCurrentUser();
   // used for outOfFrame closure
   const currentIndexRef = useRef(currentIndex)
@@ -36,24 +36,31 @@ function SwipeComponent() {
 
       //Fix meme image urls urls to be full paths
       response.data.forEach(function(part, index) {
-      part.url = baseUrl + part.url;
-      UserService.getUserName(part.poster_id).then((response) => {
-        usernames[index] = response.data[0].username;
-        setUsernames(usernames);
+        part.url = baseUrl + part.url;
 
-        //Update the card references (only on the last index for optimization)
-        if (index === db.length - 1){
-          setCurrentIndex(db.length - 1);
-          setChildRefs(() =>
-            Array(db.length)
-            .fill(0)
-            .map((i) => React.createRef()),
-          []);
-        }
+        //Usernames fetched from service can either be of type promise (for database polling) or string (if cached)
+        let serviceResponse = UserService.getUserName(part.poster_id);
+        if (serviceResponse instanceof Promise) serviceResponse.then((response) => { //Load from database
+            usernames[index] = response.data[0].username;
+            if (index === db.length - 1) updateCardReferences();
         });
+        else { //Load from cache
+          usernames[index] = serviceResponse;
+          if (index === db.length - 1) updateCardReferences();
+        }
       });
     });
   }, []);
+
+  //Update card references
+  const updateCardReferences = () => {
+    setCurrentIndex(db.length - 1);
+    setChildRefs(() =>
+      Array(db.length)
+      .fill(0)
+      .map(() => React.createRef()),
+    []);
+  }
 
   //Update current index in meme list
   const updateCurrentIndex = (val) => {
