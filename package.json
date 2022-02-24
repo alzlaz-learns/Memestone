@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "nuka-carousel": "^4.8.4",
+    "react-spring": "^9.4.3",
+    "react-tinder-card": "^1.4.5",
+    "react-with-gesture": "^4.0.8"
+  }
+}

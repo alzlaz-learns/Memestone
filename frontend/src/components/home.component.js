@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import SwipeComponent from './SwipeComponent';
 import authService from '../services/auth.service';
 import bigLogo from '../assets/logo_big.png';
@@ -9,12 +9,14 @@ export default class Home extends React.Component{
         super(props);
     
         this.state = {
-          signedIn: false
+          signedIn: false,
+          redirect: null,
         };
       }
     
       componentDidMount() {
         let user = authService.getCurrentUser();
+        if (!user) this.setState({ redirect: "/login" });
         if (user) {
             this.setState({
                 signedIn: true
@@ -23,6 +25,10 @@ export default class Home extends React.Component{
       }
     
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+          }
+          else{
         if (!this.state.signedIn)
         return (
             <div className="content">
@@ -40,5 +46,6 @@ export default class Home extends React.Component{
                 <SwipeComponent></SwipeComponent>
             </div>
         );
+          }
     }
 }

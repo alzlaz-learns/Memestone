@@ -23,7 +23,10 @@ export default class Profile extends Component {
   componentDidMount() {
     
     const currentUser = AuthService.getCurrentUser();
-    if (!currentUser) this.setState({ redirect: "/home" });
+    if (!currentUser || currentUser===null) {
+      this.setState({ redirect: true });
+      // alert(currentUser);
+    }
 
     let search = window.location.search;
     let params = new URLSearchParams(search);
@@ -46,7 +49,7 @@ export default class Profile extends Component {
       });
     }
 
-    if (user.id) {
+    if (user !== null) {
       this.getUserStats(user.id);
       this.setState({ user: user, userReady: true})
     }
@@ -67,7 +70,7 @@ export default class Profile extends Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />
+      return <Redirect push to={'/login'} />
     }
 
     const { user, numLikes, numUploads } = this.state;

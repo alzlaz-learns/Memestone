@@ -99,7 +99,7 @@ function SwipeComponent() {
   }
 
   return (
-    <div class="content">
+    <div className="content">
       <link
         href='https://fonts.googleapis.com/css?family=Damion&display=swap'
         rel='stylesheet'
