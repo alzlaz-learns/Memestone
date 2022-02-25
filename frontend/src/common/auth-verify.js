@@ -9,6 +9,8 @@ const parseJwt = (token) => {
   }
 };
 
+
+//Front end side listens for token produced then stores it into local storage.
 class AuthVerify extends Component {
   constructor(props) {
     super(props);

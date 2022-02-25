@@ -39,7 +39,7 @@ db.sequelize.sync(); //run this when its not first time;
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Super Sneaky Backend ;)" });
 });
 
 // routes
