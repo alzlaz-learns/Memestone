@@ -10,8 +10,6 @@ import Register from "./components/register.component";
 import Home from "./components/home.component";
 import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
-// import BoardModerator from "./components/board-moderator.component";
-// import BoardAdmin from "./components/board-admin.component";
 import LikedMemes from "./components/LikedMemes";
 import TopRanked from "./components/TopRanked";
 
@@ -19,7 +17,7 @@ import TopRanked from "./components/TopRanked";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-// import AuthVerify from "./common/auth-verify";
+
 import EventBus from "./common/EventBus";
 
 class App extends Component {
@@ -40,7 +38,6 @@ class App extends Component {
     const user = AuthService.getCurrentUser();
 
     window.addEventListener('storage', (event) => {
-      // console.log(event.key +" " + event.newValue + " " + event.oldValue);
       if(event.newValue == null) {
         window.location.reload(false);
       }

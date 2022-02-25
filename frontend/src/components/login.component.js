@@ -5,7 +5,9 @@ import CheckButton from "react-validation/build/button";
 
 import AuthService from "../services/auth.service";
 
-
+/*
+  login page
+*/
 const required = value => {
   if (!value) {
     return (
@@ -45,8 +47,8 @@ export default class Login extends Component {
 
   isLoggedIn(e){
     const user = AuthService.getCurrentUser();
-    console.log(user.id);
-    alert(user.id);
+    // console.log(user.id);
+    // alert(user.id);
     if (user.id !== null){
       console.log(user.id)
       alert(user.id);
@@ -66,7 +68,7 @@ export default class Login extends Component {
     });
   }
 
-  handleLogin(e) {
+  handleLogin(e) { //checks 
     e.preventDefault();
 
     this.setState({

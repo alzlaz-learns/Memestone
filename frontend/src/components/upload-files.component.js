@@ -4,6 +4,20 @@ import AuthService from "../services/auth.service";//for database submissions
 import { Redirect } from "react-router-dom";
 
 
+//front end of single image upload service
+
+/*
+  by clicking the choose file 
+  Uses html to accept a file from our input type tag 
+  we use URL.createObjectURL() to create an image URL
+  we then display that in our html to an image tag
+  then we can choose to upload 
+  this will make a call to our service file-upoad.service
+
+  it will display a progress bar for uploading and show if the file was successfully upload.
+
+*/
+
 export default class UploadImages extends Component {
   constructor(props) {
     super(props);
@@ -54,6 +68,8 @@ export default class UploadImages extends Component {
 
 
   selectFile(event) {
+
+    //helps us g
     this._isMounted && this.setState({
       currentFile:  event.target.files[0],
       previewImage: URL.createObjectURL(event.target.files[0]),
@@ -69,9 +85,6 @@ export default class UploadImages extends Component {
     this._isMounted && this.setState({
       progress: 0,
     });
-
-    //this.setState({currentFile: Date.now() + this.state.currentFile.name});//AL trying shit out
-    // console.log(this.state.currentFile.name);
 
     UploadService.upload(this.state.currentFile, {
       id: this.state.currentUser.id,

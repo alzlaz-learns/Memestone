@@ -1,6 +1,12 @@
 import http from "../http-common";
 import authHeader from './auth-header';
 
+
+/*
+  This is our file upload service that makes a call to our back-end
+  this creates the meta data for our images by creating a formdata an appending necessary information
+  then it makes a call to our back-end which uploads the files to our database by using axios through http-commons
+ */
 class FileUploadService {
   // upload(file, onUploadProgress) {
   upload(file, additional, onUploadProgress) { //al customizing parameters to see if we can add more to file
