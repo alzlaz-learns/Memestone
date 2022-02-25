@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, Link, BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -39,6 +39,12 @@ class App extends Component {
   componentDidMount() {
     const user = AuthService.getCurrentUser();
 
+    window.addEventListener('storage', (event) => {
+      console.log(event.key +" " + event.newValue + " " + event.oldValue);
+      if(event.newValue == null) {
+        window.location.reload(false);
+      }
+    });
     if (user) {
       this.setState({
         currentUser: user,
@@ -58,6 +64,7 @@ class App extends Component {
 
   logOut() {
     AuthService.logout();
+    // localStorage.setItem('user', null);//here
     this.setState({
       showModeratorBoard: false,
       showAdminBoard: false,
